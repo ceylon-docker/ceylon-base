@@ -1,0 +1,28 @@
+#
+# Base image for ceylon/ceylon images
+#
+FROM java:7-jre
+
+MAINTAINER Tako Schotanus <tako@ceylon-lang.org>
+
+LABEL org.ceylon-lang.dockerfile.description="Base image for ceylon/ceylon images" \
+    org.ceylon-lang.dockerfile.vendor="RedHat" \
+    org.ceylon-lang.dockerfile.version="1.0"
+
+USER root
+
+RUN apt-get -y update && \
+    apt-get -y install apt-transport-https less vim nodejs && \
+    wget -O - https://downloads.ceylon-lang.org/apt/ceylon-debian-repo.gpg.key | apt-key add - && \
+    echo "deb https://downloads.ceylon-lang.org/apt/ unstable main" > /etc/apt/sources.list.d/ceylon.list && \
+    apt-get clean && \
+    groupadd -r ceylon -g 1000 && \
+    useradd -u 1000 -m -s /usr/sbin/nologin -g ceylon -d /app ceylon && \
+    mkdir -p /app/.ceylon/cache && \
+    chown -R ceylon:ceylon /app && \
+    chmod -R 755 /app
+
+USER ceylon
+
+WORKDIR /app
+
