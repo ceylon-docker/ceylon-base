@@ -75,7 +75,7 @@ function build_dir() {
     rm -rf /tmp/docker-ceylon-build-templates
     mkdir /tmp/docker-ceylon-build-templates
     cp templates/$DOCKERFILE /tmp/docker-ceylon-build-templates/Dockerfile
-    sed -i "s/@@FROM@@/$FROM/g" /tmp/docker-ceylon-build-templates/Dockerfile
+    sed -i "s/@@FROM@@/${FROM//\//\\/}/g" /tmp/docker-ceylon-build-templates/Dockerfile
     sed -i "s/@@VERSION@@/$VERSION/g" /tmp/docker-ceylon-build-templates/Dockerfile
     mkdir -p "$NAME"
     pushd "$NAME" > /dev/null
@@ -84,8 +84,10 @@ function build_dir() {
     if [[ $PULL -eq 1 ]]; then
         echo "Pulling existing image from Docker Hub (if any)..."
         if [[ $VERBOSE -eq 1 ]]; then
+            docker pull "$FROM" || true
             docker pull "${IMAGE}:$NAME" || true
         else
+            docker pull "$FROM" > /dev/null || true
             docker pull "${IMAGE}:$NAME" > /dev/null || true
         fi
     fi
@@ -153,7 +155,7 @@ function build() {
     echo "Building version $VERSION ..."
 
     build_jres $VERSION "java:@-jre" "jre@" "debian"
-    build_jres $VERSION "jboss\\/base-jdk:@" "jre@" "redhat"
+    build_jres $VERSION "jboss/base-jdk:@" "jre@" "redhat"
 }
 
 build "dummy"
