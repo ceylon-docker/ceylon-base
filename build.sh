@@ -19,7 +19,7 @@ PULL=0
 PUSH=0
 CLEAN=0
 VERBOSE=0
-QUIET=
+QUIET=-q
 for arg in "$@"; do
     case "$arg" in
         --help)
@@ -48,7 +48,7 @@ for arg in "$@"; do
             ;;
         --verbose)
             VERBOSE=1
-            QUIET=-q
+            QUIET=
             ;;
     esac
 done
