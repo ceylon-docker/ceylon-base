@@ -93,7 +93,7 @@ function build_dir() {
     fi
     if [[ $BUILD -eq 1 ]]; then
         echo "Building image..."
-        docker build -t "${IMAGE}:$NAME" -q .
+        docker build -t "${IMAGE}:$NAME" $QUIET .
     fi
     [[ $PUSH -eq 1 ]] && echo "Pushing image to Docker Hub..." && docker push "${IMAGE}:$NAME"
     for t in ${TAGS[@]}; do
