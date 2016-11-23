@@ -95,10 +95,8 @@ function build_dir() {
         echo "Building image..."
         docker build -t "${IMAGE}:$NAME" $QUIET .
     fi
-    [[ $PUSH -eq 1 ]] && echo "Pushing image to Docker Hub..." && docker push "${IMAGE}:$NAME"
     for t in ${TAGS[@]}; do
         [[ $BUILD -eq 1 ]] && docker tag "${IMAGE}:$NAME" "${IMAGE}:$t"
-        [[ $PUSH -eq 1 ]] && docker push "${IMAGE}:$t"
     done
     if [[ $CLEAN -eq 1 ]]; then
         echo "Removing image..."
@@ -159,4 +157,6 @@ function build() {
 }
 
 build "dummy"
+
+[[ $PUSH -eq 1 ]] && echo "Pushing image to Docker Hub..." && docker push "${IMAGE}"
 
