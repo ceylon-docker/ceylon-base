@@ -12,7 +12,7 @@ LABEL org.ceylon-lang.dockerfile.description="Base image for ceylon/ceylon image
 USER root
 
 RUN apt-get -y update && \
-    apt-get -y install apt-transport-https less vim nodejs && \
+    apt-get -y install apt-transport-https less vim nodejs sudo && \
     wget -O - https://downloads.ceylon-lang.org/apt/ceylon-debian-repo.gpg.key | apt-key add - && \
     echo "deb https://downloads.ceylon-lang.org/apt/ unstable main" > /etc/apt/sources.list.d/ceylon.list && \
     apt-get clean && \
